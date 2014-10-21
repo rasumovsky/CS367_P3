@@ -1,0 +1,40 @@
+0:	Train 1 has exited from station 1.
+1:	Train 2 has exited from station 1.
+5:	Train 3 has exited from station 1.
+6:	Train 4 has exited from station 1.
+9:	Train 5 has exited from station 1.
+10:	Train 1 has been parked at station 2.
+11:	Train 2 has been parked at station 2.
+22:	Train 2 has exited from station 2.
+22:	Train 1 has exited from station 2.
+22:	Train 3 has been parked at station 2.
+22:	Train 4 has been parked at station 2.
+23:	Train 4 has exited from station 2.
+23:	Train 3 has exited from station 2.
+23:	Train 5 has been parked at station 2.
+24:	Train 5 has exited from station 2.
+32:	Train 2 has been parked at station 3.
+32:	Train 1 has been parked at station 3.
+33:	Train 1 has exited from station 3.
+33:	Train 2 has exited from station 3.
+33:	Train 4 has been parked at station 3.
+33:	Train 3 has been parked at station 3.
+34:	Train 3 has exited from station 3.
+34:	Train 5 has been parked at station 3.
+35:	Train 5 has exited from station 3.
+35:	Train 4 has exited from station 3.
+43:	Train 1 has been parked at station 4.
+43:	Train 2 has been parked at station 4.
+47:	Train 2 has exited from station 4.
+47:	Train 1 has exited from station 4.
+47:	Train 3 has been parked at station 4.
+47:	Train 5 has been parked at station 4.
+48:	Train 5 has exited from station 4.
+48:	Train 3 has exited from station 4.
+48:	Train 4 has been parked at station 4.
+51:	Train 4 has exited from station 4.
+57:	Train 2 has been parked at station 5.
+57:	Train 1 has been parked at station 5.
+58:	Train 5 has been parked at station 5.
+58:	Train 3 has been parked at station 5.
+61:	Train 4 has been parked at station 5.
