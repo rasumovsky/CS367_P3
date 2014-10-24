@@ -39,7 +39,7 @@ public class SimpleStack<E> implements StackADT<E> {
      * @param inputCap - The capacity of the stack
      */
     public SimpleStack(int inputCap) {
-	if (inputCap <= 0) {
+	if (inputCap <= 0) {//assume capacity of at least 1
 	    throw new IllegalArgumentException();
 	}
 	
