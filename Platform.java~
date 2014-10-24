@@ -1,0 +1,78 @@
+///////////////////////////////////////////////////////////////////////////////
+// 
+// Main Class File:  TrainSimulator.java 
+// File:             Platform.java
+// Semester:         CS367 Fall 2014
+//
+// Author:           Andrew Hard 
+// Email:            hard@wisc.edu
+// CS Login:         hard
+// Lecturer's Name:  Jim Skrentny 
+// Lab Section:      LEC-002 (77632)
+//
+///////////////////////////////////////////////////////////////////////////////
+//
+// Pair Partner:     Wayne Chew
+// Email:            mchew2@wisc.edu
+// CS Login:         mchew
+// Lecturer's Name:  Jim Skrentny
+// Lab Section:      LEC-001 (77631)
+//
+///////////////////////////////////////////////////////////////////////////////
+
+import java.util.*;
+
+/**
+ * An ordered collection of trains.
+ */
+public class Platform implements PlatformADT {	
+    
+    /**
+     * Adds the given train to the platform.
+     *
+     * @param train The train to be added to the platform
+     * @throws FullPlatformException If the platform is full
+     */
+    public void put(Train item) throws FullPlatformException {
+    }
+    
+    
+    /**
+     * Removes a train from the platform.
+     *
+     * @return The train removed from the platform
+     * @throws EmptyPlatformException If the platform is empty
+     */
+    public Train get() throws EmptyPlatformException {
+    }
+    
+    
+    /**
+     * Returns the train which may exit first without removing it from the
+     * platform.
+     *
+     * @return The train removed from the platform
+     * @throws EmptyPlatformException If the platform is empty
+     */
+    public Train check() throws EmptyPlatformException {
+    }
+    
+    
+    /**
+     * Checks if the platform is empty.
+     * 
+     * @return True if the platform is empty; else false
+     */
+    public boolean isEmpty(){
+    }
+  
+    
+    /**
+     * Checks if the platform is full.
+     * 
+     * @return True if the platform is full; else false
+     */
+    public boolean isFull() {
+    }
+
+}

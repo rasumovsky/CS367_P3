@@ -28,10 +28,10 @@ import java.util.*;
  */
 public class SimpleQueue<E> implements QueueADT<E> {
     
-    private E items[];
-    private int numItems;
-    private int capacity;
-    private int shift;// front of the line (dequeue)
+    private E items[];// stores the queue data
+    private int numItems;// the number of queued items
+    private int capacity;// the number of items that can be stored
+    private int shift;// front position of the queue in items[] array
     
     
     /** 
@@ -137,10 +137,9 @@ public class SimpleQueue<E> implements QueueADT<E> {
     
     private int getIndex(int unshiftedIdx) {
 	
-	// Shifted index accounts for the changing
-	// position of the front of the queue after
-	// several calls to dequeue
+	// Shifted index accounts for the changing array location of front
 	int shiftedIndex = unshiftedIdx + shift;
+	
 	// Index must be modulo the array capacity:
 	shiftedIndex = shiftedIndex % capacity;
 	
