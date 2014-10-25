@@ -37,6 +37,7 @@ public class SimpleQueue<E> implements QueueADT<E> {
     /** 
      * Constructor for the SimpleQueue class
      * @param inputCap - The capacity of the queue.
+
      */
     public SimpleQueue(int inputCap) {
 	if (inputCap <= 0) {//assume capacity of at least 1
