@@ -112,7 +112,7 @@ public class SimpleQueue<E> implements QueueADT<E> {
      * @return True if queue is empty; else false
      */
     public boolean isEmpty() {
-	return (numItems == 0);
+	return (numItems <= 0);
     }
     
     
@@ -122,7 +122,7 @@ public class SimpleQueue<E> implements QueueADT<E> {
      * @return True if queue is full; else false
      */
     public boolean isFull() {
-	return (numItems == capacity);
+	return (numItems >= capacity);
     }
     
     

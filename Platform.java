@@ -45,7 +45,7 @@ public class Platform implements PlatformADT {
 	}
 	
 	// initialize private class variables:
-	trainStack = new SimpleStack(capacity);
+	trainStack = new SimpleStack<Train>(capacity);
     }
     
     

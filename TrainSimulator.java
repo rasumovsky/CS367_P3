@@ -42,10 +42,11 @@ public class TrainSimulator{
      * actual time of arrival (ATA) and the actual time of departure (ATD)
      * of each train for each station.
      */
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException,
+    FullPlatformException, EmptyPlatformException, FullQueueException {
 	
 	// Check that an attempt has been made to provide all arguments:
-	if (args.length < 3) {
+	if (args.length != 3) {
 	    System.out
 .println("Usage: java TrainSimulator N Stations_File_Name Trains_File_Name");
 	    System.exit(0);
@@ -60,10 +61,10 @@ public class TrainSimulator{
 	
 	
 	// Data storage variables:
-	int nTrains;// number of trains in simulation
-	int nStations;// number of stations in simulation
-	List<Train> allTrains = new ArrayList();// Store all Trains
-	List<Station> allStations = new ArrayList();// Store all Stations
+	int nTrains = 0;// number of trains in simulation
+	int nStations = 0;// number of stations in simulation
+	List<Train> allTrains = new ArrayList<Train>();// Store all Trains
+	List<Station> allStations = new ArrayList<Station>();// Store all Stations
 	
 	
 	// Load file for station data
@@ -124,7 +125,7 @@ public class TrainSimulator{
 		Train currTrain = new Train(Integer.parseInt(splitLine[0]));
 		List currArray = currTrain.getETD();
 		for (int i = 1; i < splitLine.length; i++) {
-		    currArray.add(splitLine[i]);
+		    currArray.add(Integer.parseInt(splitLine[i]));
 		}
 		allTrains.add(currTrain);
 	    }
@@ -132,6 +133,80 @@ public class TrainSimulator{
 	}
 	trainInput.close();// finished loading train data
 	
+	//Train movement
+	int time = 0;
+	boolean movement = true;
+	boolean done = false;
+	
+	//Initialize train tracks(nStations -1), time = 0
+	List<SimpleQueue<List<Train>>> allTracks = new ArrayList<SimpleQueue<List<Train>>>();
+	SimpleQueue<List<Train>> track;
+	List<Train> currTrains = new ArrayList<Train>();
+	Train train;
+	Platform currPlatform;
+	
+	
+	for(int i = 0; i < nStations-1; i++){
+		track = new SimpleQueue<List<Train>>(10);
+		allTracks.add(track);
+	}
+
+	//set up the simulation, time = 0
+	for(int i = 0; i < nTrains; i++){
+		allStations.get(0).getPlatform().put(allTrains.get(i));
+	}//add trains to platform of first station
+	time ++;
+
+	//movement begins
+	while(movement){
+		for(int i = 0; i < nStations; i++){
+			currPlatform = allStations.get(i).getPlatform();
+			
+			if(!currPlatform.isEmpty()){
+			done = false;
+			currTrains = new ArrayList<Train>();// list to store trains for departure
+			while(!done){
+				train = currPlatform.check();
+				if(train.getETD().get(0) >= time){
+					currTrains.add(currPlatform.get());
+					System.out.println("added");
+				}
+				else{
+					done = true;
+				}
+			}//check to see whether train can depart in that station
+			}
+
+		}
+		time ++;
+	}
+
+
+
+	switch(infoCommand){
+		case 0:
+		break;
+		case 1:
+		break;
+		case 2:
+		break;
+		default:
+		System.out.println("Error");
+		break;
+	}
+
+
+    }
+
+    private static void TrackMove(){
+
+    }
+
+    private static void StationToTrack(){
+
+    }
+
+    private static void TrackToStation(){
 
     }
 }
