@@ -132,6 +132,25 @@ public class TrainSimulator{
 	    
 	}
 	trainInput.close();// finished loading train data
+
+	boolean print = false;
+	boolean printATD = false;
+	boolean printATA = false;
+
+		switch(infoCommand){
+		case 0:
+			print = true;
+		break;
+		case 1:
+			printATD = true;
+		break;
+		case 2:
+			printATA = true;
+		break;
+		default:
+		System.out.println("Error");
+		break;
+	}//user command
 	
 	//Train movement
 	int time = 0;
@@ -153,25 +172,30 @@ public class TrainSimulator{
 	//set up the simulation, time = 0
 	for(int i = nTrains-1; i >= 0; i--){
 		allStations.get(0).getPlatform().put(allTrains.get(i));
+		allTrains.get(i).getATD().add(0);//set departure time to 0
 	}//add trains to platform of first station
-	time ++;
 
 	//movement begins
 	while(movement){
 		for(int i = 0; i < nStations-1; i++){
-			currPlatform = allStations.get(i).getPlatform();
+			currPlatform = allStations.get(i).getPlatform();//get platform
 
 			done = false;
-			track = allTracks.get(i);
+			track = allTracks.get(i);//get tracks
+
 			while(!done){
 				if(!currPlatform.isEmpty()){
-				train = currPlatform.check();
+				train = currPlatform.check();//get train
 				
-				if(train.getETD().get(i) <= time){
+				if(train.getETD().get(i) <= time && train.getATD().get(i) <= time){
 					track.enqueue(currPlatform.get());
-					train.getATD().add(time);
-					train.getATA().add(time+10);
+					if(print){
+					System.out.printf("%d:\tTrain %d has exited from station %d.\n",time,train.getId(),i+1);
 				}
+					train.getATD().remove(i);
+					train.getATD().add(time);//set actual departure time
+					train.getATA().add(time+10);//set arrival time
+				}//check ATD and ETD to see whether the train can depart
 				else{
 					done = true;
 				}
@@ -181,62 +205,75 @@ public class TrainSimulator{
 				}
 			}//check to see whether train can depart in that station
 		}//from platform to tracks
+
 		for(int i=0; i< nStations-1; i++){
-			currPlatform = allStations.get(i+1).getPlatform();
+			currPlatform = allStations.get(i+1).getPlatform();//get platform
 			
-			if(currPlatform.isEmpty()){
-				track = allTracks.get(i);
-				done = false;
-				while(!done){
-					if(!track.isEmpty() && !currPlatform.isFull()){
-					train = track.peek();
-					if(train.getATA().get(i) <= time){
-						currPlatform.put(track.dequeue());
-					}
-					else{
-						done = true;
-					}
-					}
-					else{
-						done = true;
-					}
+			track = allTracks.get(i);//get track
+			done = false;
+			while(!done){
+				if(!track.isEmpty() && !currPlatform.isFull()){
+				train = track.peek();//get train
+				if(train.getATA().get(i) <= time){
+					currPlatform.put(track.dequeue());
+				if(print){
+					System.out.printf("%d:\tTrain %d has been parked at station %d.\n",time,train.getId(),i+2);
+				}
+					train.getATA().remove(i);
+					train.getATA().add(i,time);//set actual time of arrival
+					train.getATD().add(time+1);//stay at platfrom for at least 1s
+				}//check ATA to see whether train can arrive at platform
+				else{
+					done = true;
+				}
+				}
+				else{
+					done = true;
 				}
 			}
+			
 		}
 		
 		if(allStations.get(nStations-1).getPlatform().isFull()){
 			movement = false;
-		}
+		}//check whehter last platform is full
+
 		time ++;
-		System.out.println(time);
 	}
 
+	List<Integer> temp;
 
+	if(printATD){
+		for(int i = 0; i < nTrains; i++){
+			temp = allTrains.get(i).getATD();
 
-	switch(infoCommand){
-		case 0:
-		break;
-		case 1:
-		break;
-		case 2:
-		break;
-		default:
-		System.out.println("Error");
-		break;
+			System.out.print("[");
+			for(int j = 0; j < nStations-1; j++){
+				if(j == nStations-2){
+					System.out.println(temp.get(j) + "]");
+				}
+				else{
+					System.out.print(temp.get(j) + ", ");
+				}
+			}
+		}		
 	}
 
+	if(printATA){
+		for(int i = 0; i < nTrains; i++){
+			temp = allTrains.get(i).getATA();
 
+			System.out.print("[");
+			for(int j = 0; j < nStations-1; j++){
+				if(j == nStations-2){
+					System.out.println(temp.get(j) + "]");
+				}
+				else{
+					System.out.print(temp.get(j) + ", ");
+				}
+			}
+		}	
+	
     }
-
-    private static void TrackMove(){
-
-    }
-
-    private static void StationToTrack(){
-
-    }
-
-    private static void TrackToStation(){
-
-    }
+}
 }
