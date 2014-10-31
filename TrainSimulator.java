@@ -43,7 +43,7 @@ public class TrainSimulator{
      * of each train for each station.
      */
     public static void main(String[] args) throws FileNotFoundException,
-    FullPlatformException, EmptyPlatformException, FullQueueException {
+    FullPlatformException, EmptyPlatformException, FullQueueException, EmptyQueueException {
 	
 	// Check that an attempt has been made to provide all arguments:
 	if (args.length != 3) {
@@ -123,7 +123,7 @@ public class TrainSimulator{
 		
 		// Make a new Train object to add to array eventually:
 		Train currTrain = new Train(Integer.parseInt(splitLine[0]));
-		List currArray = currTrain.getETD();
+		List<Integer> currArray = currTrain.getETD();
 		for (int i = 1; i < splitLine.length; i++) {
 		    currArray.add(Integer.parseInt(splitLine[i]));
 		}
@@ -139,46 +139,76 @@ public class TrainSimulator{
 	boolean done = false;
 	
 	//Initialize train tracks(nStations -1), time = 0
-	List<SimpleQueue<List<Train>>> allTracks = new ArrayList<SimpleQueue<List<Train>>>();
-	SimpleQueue<List<Train>> track;
-	List<Train> currTrains = new ArrayList<Train>();
+	List<SimpleQueue<Train>> allTracks = new ArrayList<SimpleQueue<Train>>();
+	SimpleQueue<Train> track;
 	Train train;
 	Platform currPlatform;
 	
 	
 	for(int i = 0; i < nStations-1; i++){
-		track = new SimpleQueue<List<Train>>(10);
+		track = new SimpleQueue<Train>(100);
 		allTracks.add(track);
 	}
 
 	//set up the simulation, time = 0
-	for(int i = 0; i < nTrains; i++){
+	for(int i = nTrains-1; i >= 0; i--){
 		allStations.get(0).getPlatform().put(allTrains.get(i));
 	}//add trains to platform of first station
 	time ++;
 
 	//movement begins
 	while(movement){
-		for(int i = 0; i < nStations; i++){
+		for(int i = 0; i < nStations-1; i++){
 			currPlatform = allStations.get(i).getPlatform();
-			
-			if(!currPlatform.isEmpty()){
+
 			done = false;
-			currTrains = new ArrayList<Train>();// list to store trains for departure
+			track = allTracks.get(i);
 			while(!done){
+				if(!currPlatform.isEmpty()){
 				train = currPlatform.check();
-				if(train.getETD().get(0) >= time){
-					currTrains.add(currPlatform.get());
-					System.out.println("added");
+				
+				if(train.getETD().get(i) <= time){
+					track.enqueue(currPlatform.get());
+					train.getATD().add(time);
+					train.getATA().add(time+10);
+				}
+				else{
+					done = true;
+				}
 				}
 				else{
 					done = true;
 				}
 			}//check to see whether train can depart in that station
+		}//from platform to tracks
+		for(int i=0; i< nStations-1; i++){
+			currPlatform = allStations.get(i+1).getPlatform();
+			
+			if(currPlatform.isEmpty()){
+				track = allTracks.get(i);
+				done = false;
+				while(!done){
+					if(!track.isEmpty() && !currPlatform.isFull()){
+					train = track.peek();
+					if(train.getATA().get(i) <= time){
+						currPlatform.put(track.dequeue());
+					}
+					else{
+						done = true;
+					}
+					}
+					else{
+						done = true;
+					}
+				}
 			}
-
+		}
+		
+		if(allStations.get(nStations-1).getPlatform().isFull()){
+			movement = false;
 		}
 		time ++;
+		System.out.println(time);
 	}
 
 
